@@ -1,16 +1,15 @@
 import Task from "./Task";
 import PropTypes from "prop-types";
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export default function TaskList() {
     const [tasks, setTasks] = useState([]);
 
     useEffect(() => {
         const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        //console.log(storedTasks); Revisar paso de tareas
         setTasks(storedTasks);
     }, []);
-
-
 
     return (
         <div>
@@ -21,9 +20,6 @@ export default function TaskList() {
     );
 }
 
-
-
-//codigo solución que encontré para el error que me daba para la validación de props
 TaskList.propTypes = {
     tasks: PropTypes.arrayOf(
         PropTypes.shape({

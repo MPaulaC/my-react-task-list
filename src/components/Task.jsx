@@ -15,19 +15,15 @@ export default function Task(props) {
             return task;
         });
         localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-    
     };
-
-    
 
     return (
         <div>
-            <input type="checkbox" onClick={handleCheckboxClick} checked={isCompleted} />
+            <input type="checkbox" onChange={handleCheckboxClick} checked={isCompleted} />
             <span>{name}</span>
         </div>
     );
 }
-
 
 
 //codigo solución que encontré para el error que me daba para la validación de props
