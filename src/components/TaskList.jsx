@@ -1,31 +1,35 @@
+import { useEffect, useState } from "react";
 import Task from "./Task";
-import PropTypes from "prop-types";
-import { useState, useEffect } from "react";
+import useTasks from "../hooks/useTasks";
 
 export default function TaskList() {
-    const [tasks, setTasks] = useState([]);
+    const { tasks, createTask, deleteTask, updateTask } = useTasks();
+    const [taskList, setTaskList] = useState([]);
 
     useEffect(() => {
-        const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-        //console.log(storedTasks); Revisar paso de tareas
-        setTasks(storedTasks);
-    }, []);
+        setTaskList(tasks);
+    }, [tasks]);
+
+    const handleCreateTask = () => {
+        const newTaskName = prompt("Ingresa la tarea nueva");
+        if (newTaskName) {
+            createTask(newTaskName);
+        }
+    };
 
     return (
         <div>
-            {tasks.map((task) => (
-                <Task key={task.id} id={task.id} name={task.name} completed={task.completed} />
+            {taskList.map((task) => (
+                <Task
+                    key={task.id}
+                    id={task.id}
+                    name={task.name}
+                    completed={task.completed}
+                    deleteTask={deleteTask}
+                    updateTask={updateTask}
+                />
             ))}
+            <button onClick={handleCreateTask}>Crear nueva tarea</button>
         </div>
     );
 }
-
-TaskList.propTypes = {
-    tasks: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.number.isRequired,
-            name: PropTypes.string.isRequired,
-            completed: PropTypes.bool.isRequired,
-        })
-    ).isRequired,
-};

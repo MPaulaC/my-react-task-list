@@ -1,32 +1,63 @@
-
 import PropTypes from "prop-types";
 import { useState } from "react";
+import useTasks from "../hooks/useTasks";
 
 export default function Task(props) {
-    const { name, completed } = props;
+    const { id, name, completed } = props;
     const [isCompleted, setIsCompleted] = useState(completed);
+    const { updateTask, deleteTask } = useTasks();
+    const [newTaskName, setNewTaskName] = useState(name);
+    const [isEditing, setIsEditing] = useState(false);
 
     const handleCheckboxClick = () => {
         setIsCompleted(!isCompleted);
-        const updatedTasks = JSON.parse(localStorage.getItem("tasks")).map((task) => {
-            if (task.id === props.id) {
-                task.completed = !isCompleted;
-            }
-            return task;
-        });
-        localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+        updateTask(id, { completed: !isCompleted });
+    };
+
+    const handleDeleteClick = () => {
+        deleteTask(id);
+    };
+
+    const handleEditClick = () => {
+        setIsEditing(true);
+    };
+
+    const handleSaveClick = () => {
+        if (newTaskName.trim() !== "") {
+            updateTask(id, { name: newTaskName.trim() });
+        }
+        setIsEditing(false);
     };
 
     return (
         <div>
-            <input type="checkbox" onChange={handleCheckboxClick} checked={isCompleted} />
-            <span>{name}</span>
+            <div style={{ display: "flex", alignItems: "center" }}>
+                <input
+                    type="checkbox"
+                    onChange={handleCheckboxClick}
+                    checked={isCompleted}
+                />
+                {isEditing ? (
+                    <div>
+                        <input
+                            type="text"
+                            value={newTaskName}
+                            onChange={(e) => setNewTaskName(e.target.value)}
+                        />
+                        <button onClick={handleSaveClick}>Guardar</button>
+                    </div>
+                ) : (
+                    <div>
+                        <span>{name}</span>
+                        <button onClick={handleEditClick}>Editar</button>
+                    </div>
+                )}
+                <button onClick={handleDeleteClick}>Borrar</button>
+            </div>
         </div>
     );
 }
 
-
-//codigo solución que encontré para el error que me daba para la validación de props
 Task.propTypes = {
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
