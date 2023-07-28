@@ -1,4 +1,4 @@
-import Header from "./components/Header";
+//import Header from "./components/Header";
 import TaskList from "./components/TaskList";
 import useTasks from "./hooks/useTasks";
 
@@ -7,7 +7,7 @@ function App() {
 
   return (
     <div>
-      <Header />
+      
       <TaskList tasks={tasks} deleteTask={deleteTask} updateTask={updateTask} createTask={createTask} />
     </div>
   );

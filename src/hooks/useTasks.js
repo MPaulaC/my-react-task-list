@@ -11,7 +11,7 @@ export default function useTasks() {
     const createTask = (name) => {
         const newTask = { id: Date.now(), name, completed: false };
         setTasks((prevTasks) => [...prevTasks, newTask]);
-    };
+    }; 
 
     const deleteTask = (id) => {
         setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));

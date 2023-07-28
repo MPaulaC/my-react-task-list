@@ -1,11 +1,9 @@
+import  { useState } from "react";
 import PropTypes from "prop-types";
-import { useState } from "react";
-import useTasks from "../hooks/useTasks";
 
 export default function Task(props) {
-    const { id, name, completed } = props;
+    const { id, name, completed, deleteTask, updateTask } = props;
     const [isCompleted, setIsCompleted] = useState(completed);
-    const { updateTask, deleteTask } = useTasks();
     const [newTaskName, setNewTaskName] = useState(name);
     const [isEditing, setIsEditing] = useState(false);
 
@@ -62,4 +60,6 @@ Task.propTypes = {
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     completed: PropTypes.bool.isRequired,
+    deleteTask: PropTypes.func.isRequired,
+    updateTask: PropTypes.func.isRequired,
 };
