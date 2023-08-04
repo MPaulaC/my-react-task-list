@@ -3,15 +3,20 @@ import { useState, useEffect } from "react";
 export default function useTasks() {
     const [tasks, setTasks] = useState([]);
 
+    // Cargar las tareas desde el almacenamiento local al cargar la página
     useEffect(() => {
         const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
         setTasks(storedTasks);
     }, []);
 
-    const createTask = (name) => {
-        const newTask = { id: Date.now(), name, completed: false };
+    // Guardar las tareas en el almacenamiento local cada vez que haya cambios en el estado
+    useEffect(() => {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }, [tasks]);
+
+    const createTask = (newTask) => {
         setTasks((prevTasks) => [...prevTasks, newTask]);
-    }; 
+    };
 
     const deleteTask = (id) => {
         setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
@@ -19,18 +24,9 @@ export default function useTasks() {
 
     const updateTask = (id, updates) => {
         setTasks((prevTasks) =>
-            prevTasks.map((task) => {
-                if (task.id === id) {
-                    return { ...task, ...updates };
-                }
-                return task;
-            })
+            prevTasks.map((task) => (task.id === id ? { ...task, ...updates } : task))
         );
     };
-
-    useEffect(() => {
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-    }, [tasks]);
 
     return { tasks, createTask, deleteTask, updateTask };
 }

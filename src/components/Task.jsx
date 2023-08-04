@@ -1,55 +1,30 @@
-import  { useState } from "react";
+
 import PropTypes from "prop-types";
 
 export default function Task(props) {
     const { id, name, completed, deleteTask, updateTask } = props;
-    const [isCompleted, setIsCompleted] = useState(completed);
-    const [newTaskName, setNewTaskName] = useState(name);
-    const [isEditing, setIsEditing] = useState(false);
 
     const handleCheckboxClick = () => {
-        setIsCompleted(!isCompleted);
-        updateTask(id, { completed: !isCompleted });
+        updateTask(id, { completed: !completed });
     };
 
     const handleDeleteClick = () => {
         deleteTask(id);
     };
 
-    const handleEditClick = () => {
-        setIsEditing(true);
-    };
-
-    const handleSaveClick = () => {
-        if (newTaskName.trim() !== "") {
-            updateTask(id, { name: newTaskName.trim() });
-        }
-        setIsEditing(false);
-    };
-
     return (
         <div>
             <div style={{ display: "flex", alignItems: "center" }}>
-                <input
-                    type="checkbox"
-                    onChange={handleCheckboxClick}
-                    checked={isCompleted}
-                />
-                {isEditing ? (
-                    <div>
-                        <input
-                            type="text"
-                            value={newTaskName}
-                            onChange={(e) => setNewTaskName(e.target.value)}
-                        />
-                        <button onClick={handleSaveClick}>Guardar</button>
-                    </div>
-                ) : (
-                    <div>
-                        <span>{name}</span>
-                        <button onClick={handleEditClick}>Editar</button>
-                    </div>
-                )}
+                <label>
+                    <input
+                        type="checkbox"
+                        onChange={handleCheckboxClick}
+                        checked={completed}
+                    />
+                    <span style={{ textDecoration: completed ? "line-through" : "none" }}>
+                        {name}
+                    </span>
+                </label>
                 <button onClick={handleDeleteClick}>Borrar</button>
             </div>
         </div>
