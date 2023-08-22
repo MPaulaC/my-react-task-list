@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import Task from "./Task";
 import useTaskManager from "./useTaskManager";
+import {
+  Box,
+  Button,
+  FormControl,
+  Input,
+  Stack,
+  Textarea,
+} from "@chakra-ui/react";
 
 function TaskList() {
   const { tasks, createTask, deleteTask, updateTask } = useTaskManager();
@@ -10,19 +18,25 @@ function TaskList() {
   const handleNewTaskDescription = (event) => {
     setNewTaskDescription(event.target.value);
   };
+
   const handleNewTaskNameChange = (event) => {
     setNewTaskName(event.target.value);
   };
 
   const handleAddTask = (e) => {
     e.preventDefault();
-    if(newTaskName.length>3){
-      const newTask = { name: newTaskName,description: newTaskDescription, completed: false };
+    if (newTaskName.length > 3) {
+      const newTask = {
+        name: newTaskName,
+        description: newTaskDescription,
+        completed: false,
+      };
       createTask(newTask);
       setNewTaskName("");
       setNewTaskDescription("");
-    }else{alert("El nombre de la tarea debe tener más de 3 caracteres.");}
-    
+    } else {
+      alert("El nombre de la tarea debe tener más de 3 caracteres.");
+    }
   };
 
   const handleTaskCompletion = (taskIndex) => {
@@ -40,21 +54,28 @@ function TaskList() {
   };
 
   return (
-    <div>
+    <Box>
       <form action="">
-      <div>
-        <input
-          type="text"
-          value={newTaskName}
-          onChange={handleNewTaskNameChange}
-        />
-        <input 
-          type="text"
-          value={newTaskDescription}
-          onChange={handleNewTaskDescription}
-           />
-        <button onClick={handleAddTask}>Agregar</button>
-      </div>
+        <Stack direction="column" spacing={2}>
+          <FormControl>
+            <Input
+              type="text"
+              placeholder="Nombre de la tarea"
+              value={newTaskName}
+              onChange={handleNewTaskNameChange}
+            />
+          </FormControl>
+          <FormControl>
+            <Textarea
+              placeholder="Descripción de la tarea"
+              value={newTaskDescription}
+              onChange={handleNewTaskDescription}
+            />
+          </FormControl>
+          <Button colorScheme="blue" onClick={handleAddTask}>
+            Agregar
+          </Button>
+        </Stack>
       </form>
       {tasks.map((task, index) => (
         <Task
@@ -67,8 +88,7 @@ function TaskList() {
           onUpdate={(updatedTask) => handleTaskUpdate(index, updatedTask)}
         />
       ))}
-      
-    </div>
+    </Box>
   );
 }
 
