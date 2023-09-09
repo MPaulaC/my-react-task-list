@@ -1,14 +1,16 @@
-import React from "react";
-import Menu from "./Menu";
-
+import React from 'react';
+import { ChakraProvider } from '@chakra-ui/react';
+import './App.css'; 
+import Menu from './Menu'; 
 function App() {
-  
-
   return (
-    <div>
-      <Menu></Menu>
-    </div>
+    <ChakraProvider>
+      <div className="App">
+        <Menu />
+      </div>
+    </ChakraProvider>
   );
 }
 
 export default App;
+
